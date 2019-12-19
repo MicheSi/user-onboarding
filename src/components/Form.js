@@ -45,6 +45,23 @@ const NewForm = ({values, errors, touched, status}) => {
                 )}
                 </div>
                 <div>
+                    <label htmlFor='role'>Role: </label>
+                    <Field
+                     id='role'
+                     className='role-select'
+                     as='select'
+                     name='role'
+                    >
+                        <option disabled>Choose an option</option>
+                        <option value='Data Scientist'>Data Scientist</option>
+                        <option value='Web Developer'>Web Developer</option>
+                        <option value='Software Engineer'>Software Engineer</option>
+                    </Field>
+                    {touched.role && errors.tole && (
+                    <p className='errors'>{errors.role}</p>
+                )}
+                </div>
+                <div>
                 <label
                  className='checkbox'
                  htmlFor='terms'>
@@ -64,18 +81,22 @@ const NewForm = ({values, errors, touched, status}) => {
                     <button type='submit'>Submit</button>
                 </div>
             </Form>
+            <div className='user-list'>
+                <h3>List of Users</h3>
             {users.map(user => (
                 <ul key={user.id}>
                     <li>Name: {user.name}</li>
                     <li>Email: {user.email}</li>
+                    <li>Role: {user.role}</li>
                 </ul>
             ))}
+            </div>
         </div>
     )
 }
 
 const FormikForm = withFormik({
-    mapPropsToValues({name, email, password, terms}) {
+    mapPropsToValues({name, email, password, role, terms}) {
         return {
             name: '',
             email: '',
@@ -87,6 +108,7 @@ const FormikForm = withFormik({
         name: Yup.string().required(),
         email: Yup.string().required(),
         password: Yup.string().required(),
+        role: Yup.string().oneOf(['Data Scientist', 'Web Developer', 'Software Engineer']).required(),
         terms: Yup.boolean().oneOf([true], "Must accept Terms of Service")
     }),
     handleSubmit(values, {setStatus, resetForm}) {

@@ -1,5 +1,11 @@
+@import url('https://fonts.googleapis.com/css?family=Barlow&display=swap');
+
 html, body {
   margin: 0 auto;
+  background-image: url('./images/colors.jpg');
+  background-attachment: fixed;
+  background-size: cover;
+  font-family: 'Barlow', sans-serif;
 }
 
 .App {
@@ -26,15 +32,19 @@ ul {
 }
 
 button {
-  width: 100px;
+  width: 80px;
   height: 30px;
   cursor: pointer;
 }
 
 button:hover {
-  background-color: steelblue;
+  background-color: rgba(147, 112, 219, .5);
 }
 
 .errors {
   color: red;
+}
+
+.user-list {
+  margin-top: 3%;
 }

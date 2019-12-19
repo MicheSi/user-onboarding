@@ -1,8 +1,16 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { withFormik, Form, Field } from 'formik';
 import * as Yup from 'yup';
+import axios from 'axios';
 
-const NewForm = ({values, errors, touched}) => {
+const NewForm = ({values, errors, touched, status}) => {
+    const [user, setUser] = useState([]);
+
+    useEffect(() => {
+        console.log('Status has changed', status);
+        status && setUser(user => [...user, status])
+    }, [status]);
+
     return (
         <div className='form-container'>
             <Form>
@@ -45,21 +53,18 @@ const NewForm = ({values, errors, touched}) => {
                 )}
                 </label>
                 <button type='submit'>Submit</button>
-                
-
             </Form>
-            
         </div>
-
     )
 }
 
 const FormikForm = withFormik({
-    mapPropsToValues({name, email, password}) {
+    mapPropsToValues({name, email, password, terms}) {
         return {
             name: '',
             email: '',
-            password: ''
+            password: '',
+            terms: terms || false
         }
     },
     validationSchema: Yup.object().shape({
@@ -67,7 +72,16 @@ const FormikForm = withFormik({
         email: Yup.string().required(),
         password: Yup.string().required(),
         terms: Yup.boolean().oneOf([true], "Must accept Terms of Service")
-    })
+    }),
+    handleSubmit(values, {setStatus}) {
+        console.log('Submitting data', values)
+        axios.post('https://reqres.in/api/users', values)
+        .then(response => {
+            console.log('Successful', response);
+            setStatus(response.data);
+        })
+        .catch(error => console.log(error.response));
+    }
 })(NewForm)
 
 export default FormikForm;

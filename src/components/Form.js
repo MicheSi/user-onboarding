@@ -4,11 +4,11 @@ import * as Yup from 'yup';
 import axios from 'axios';
 
 const NewForm = ({values, errors, touched, status}) => {
-    const [user, setUser] = useState([]);
+    const [users, setUsers] = useState([]);
 
     useEffect(() => {
         console.log('Status has changed', status);
-        status && setUser(user => [...user, status])
+        status && setUsers(users => [...users, status])
     }, [status]);
 
     return (
@@ -54,6 +54,12 @@ const NewForm = ({values, errors, touched, status}) => {
                 </label>
                 <button type='submit'>Submit</button>
             </Form>
+            {users.map(user => (
+                <ul key={user.id}>
+                    <li>Name: {user.name}</li>
+                    <li>Email: {user.email}</li>
+                </ul>
+            ))}
         </div>
     )
 }

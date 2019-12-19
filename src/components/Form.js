@@ -14,6 +14,7 @@ const NewForm = ({values, errors, touched, status}) => {
     return (
         <div className='form-container'>
             <Form>
+                <div>
                 <label htmlFor='name'>Name: </label>
                 <Field
                 id='name'
@@ -22,6 +23,8 @@ const NewForm = ({values, errors, touched, status}) => {
                 {touched.name && errors.name && (
                     <p className='errors'>{errors.name}</p>
                 )}
+                </div>
+                <div>
                 <label htmlFor='email'>Email: </label>
                 <Field
                 id='email'
@@ -30,6 +33,8 @@ const NewForm = ({values, errors, touched, status}) => {
                 {touched.email && errors.email && (
                     <p className='errors'>{errors.email}</p>
                 )}
+                </div>
+                <div>
                 <label htmlFor='password'>Password: </label>
                 <Field
                 id='password'
@@ -38,6 +43,8 @@ const NewForm = ({values, errors, touched, status}) => {
                 {touched.password && errors.password && (
                     <p className='errors'>{errors.password}</p>
                 )}
+                </div>
+                <div>
                 <label
                  className='checkbox'
                  htmlFor='terms'>
@@ -52,7 +59,10 @@ const NewForm = ({values, errors, touched, status}) => {
                     <p className='errors'>{errors.terms}</p>
                 )}
                 </label>
-                <button type='submit'>Submit</button>
+                </div>
+                <div>
+                    <button type='submit'>Submit</button>
+                </div>
             </Form>
             {users.map(user => (
                 <ul key={user.id}>
@@ -79,12 +89,13 @@ const FormikForm = withFormik({
         password: Yup.string().required(),
         terms: Yup.boolean().oneOf([true], "Must accept Terms of Service")
     }),
-    handleSubmit(values, {setStatus}) {
+    handleSubmit(values, {setStatus, resetForm}) {
         console.log('Submitting data', values)
         axios.post('https://reqres.in/api/users', values)
         .then(response => {
             console.log('Successful', response);
             setStatus(response.data);
+            resetForm()
         })
         .catch(error => console.log(error.response));
     }
